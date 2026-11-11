@@ -1,4 +1,4 @@
-const C='tayo-prep-v1',F=['./','index.html','manifest.json','icon.jpg','verses.js','badge.png'];
+const C='tayo-prep-v2',F=['./','index.html','manifest.json','icon.jpg','verses.js','badge.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>Promise.all(F.map(u=>/^http/.test(u)?fetch(u,{mode:'no-cors'}).then(x=>c.put(u,x)).catch(()=>0):c.add(u).catch(()=>0)))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!=C).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{const r=e.request,u=new URL(r.url);if(r.method!='GET'||!(u.origin==location.origin||/cdnjs|fonts\.g/.test(u.host)))return;
