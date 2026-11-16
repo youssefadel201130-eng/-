@@ -68,6 +68,13 @@ table{border-collapse:collapse;width:100%;font-size:13px}td,th{border:1px solid 
 @media(prefers-reduced-motion:reduce){#splash *{animation:none!important}}
 .rt td[onclick]{cursor:pointer}.rt td.ed{background:#ffe08a;color:#000;font-weight:700}
 .tg{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tp{padding:16px 6px;border-radius:14px;font-size:13px;font-weight:700;border:3px solid transparent}.tp.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--c)}
+.joy{position:fixed;inset:0;z-index:150;pointer-events:none;overflow:hidden}
+.joy i{position:absolute;bottom:-40px;font-style:normal;animation:jup 1.6s ease-out forwards}
+.jm{position:absolute;top:34%;left:50%;transform:translateX(-50%);background:var(--nv);color:var(--ink);border:var(--bd);border-radius:var(--rad);padding:14px 22px;text-align:center;font-size:20px;box-shadow:0 8px 30px #0005;animation:jpop 1.8s ease forwards}
+.jm b{color:var(--b)}
+@keyframes jup{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:1}100%{transform:translateY(-75vh) scale(1.1) rotate(25deg);opacity:0}}
+@keyframes jpop{0%{transform:translateX(-50%) scale(.6);opacity:0}15%{transform:translateX(-50%) scale(1.08);opacity:1}25%{transform:translateX(-50%) scale(1)}85%{opacity:1}100%{transform:translateX(-50%) translateY(-14px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.joy i{display:none}}
 </style></head><body>
 <div id="app"></div>
 <div id="splash"><img src="icon.jpg" alt=""><h1>Ⲟⲩⲱⲓⲛⲓ</h1><p>خدمة الإعدادي</p><div class="ld"><i></i></div></div>
@@ -152,7 +159,10 @@ async function sDel(n){if(!await md('تشيل اسم '+n+' من القايمة؟
 const supCard=()=>{if(SL===null&&!SLB&&navigator.onLine){SLB=1;sLoad()}const L=SL||[];return `<div class="card"><h2>المشرفين</h2><small>الأسماء دي ظاهرة للمشرفين بس</small>${L.map(x=>`<div class="row it"><span>${e(x.name||'—')} <small>${x.seen?String(x.seen).slice(0,10):''}</small></span><button class="ln" onclick="sDel(decodeURIComponent('${encodeURIComponent(x.name||'')}'))">إزالة</button></div>`).join('')||'<p><small>جاري التحميل...</small></p>'}</div>`};
 function out(){S.me=0;S.sup=0;S.tk='';S.rt='';S.view=0;pg='t';sv()}
 const SD=5,SDN='الجمعة';
-function tk(k,p){if(k=='x'&&!S.sup)return;if(S.lock&&!S.sup)return tt('المهام مقفولة دلوقتي');const a=A(),L=a.log[day()]||[];if(L.includes(k))return;a.log[day()]=[...L,k];a.pts+=p;if(k=='x'){a.att=a.att||[];if(!a.att.includes(day()))a.att.push(day())}sv()}
+function tk(k,p){if(k=='x'&&!S.sup)return;if(S.lock&&!S.sup)return tt('المهام مقفولة دلوقتي');const a=A(),L=a.log[day()]||[];if(L.includes(k))return;a.log[day()]=[...L,k];a.pts+=p;if(k=='x'){a.att=a.att||[];if(!a.att.includes(day()))a.att.push(day())}sv();joy(p)}
+function joy(p){try{const E=['🎉','😍','🥳','✨','👏','😊','🙌','💛','🌟'],M=['أحسنت! 🎉','برافو عليك! 👏','ربنا يفرّحك 😊','ممتاز! 🌟','عظيم! 🙌'],o=document.createElement('div');o.className='joy';
+ o.innerHTML='<div class="jm">'+M[Math.floor(Math.random()*M.length)]+'<br><b>+'+p+' ⲧⲁⲓⲟ</b></div>'+Array.from({length:14},(_,i)=>'<i style="left:'+Math.round(5+Math.random()*90)+'%;animation-delay:'+(Math.random()*.35).toFixed(2)+'s;font-size:'+Math.round(18+Math.random()*16)+'px">'+E[Math.floor(Math.random()*E.length)]+'</i>').join('');
+ document.body.append(o);navigator.vibrate&&navigator.vibrate(30);setTimeout(()=>o.remove(),1900)}catch(x){}}
 function un(k,p){if(k=='x'&&!S.sup)return;if(S.lock&&!S.sup)return tt('المهام مقفولة دلوقتي');const a=A(),L=a.log[day()]||[];a.log[day()]=L.filter(x=>x!=k);a.pts-=p;if(k=='x'&&a.att)a.att=a.att.filter(d=>d!=day());sv()}
 async function buy(i){const a=A(),s=S.sh[i];if(a.pts<s.p)return tt('نقاطك مش كفاية');if(!await md('تشتري '+s.n+'؟'))return;a.pts-=s.p;S.pu.push({s:ik(s),n:a.name,d:day()});sv()}
 function addSh(){const n=$('#sn').value.trim(),p=+$('#sp').value,d=$('#sd').value.trim();if(!n||!p)return tt('اكتب الاسم والسعر');const f=$('#si').files[0];const go=m=>{S.sh.push({n,p,d,m,by:[]});sv()};f?img(f,go):go('')}
